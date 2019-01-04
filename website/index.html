@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <title>LED Clock</title>
+    <link rel="stylesheet" href="css/minified.css">
+</head>
+<body>
+<div id="app">
+    <div class="statusbar"></div>
+    <div class="view view-main">
+        <div data-name="home" class="page">
+            <div class="navbar">
+                <div class="navbar-inner sliding">
+                    <div class="left"></div>
+                    <div class="title">LED Clock</div>
+                    <div class="right"></div>
+                </div>
+            </div>
+            
+            <div class="page-content">
+                <div class="block-title">Modus einstellen</div>
+                <div class="list">
+                    <ul>
+                        <li>
+                            <a href="/display.html" class="item-link item-content">
+                                <div class="item-media"><i class="icon f7-icons">favorites</i></div>
+                                <div class="item-inner">
+                                    <div class="item-title">Anzeige</div>
+                                </div>
+                            </a>
+                        </li>
+                        <!--
+                        <li>
+                            <a href="/apps.html" class="item-link item-content">
+                                <div class="item-media"><i class="icon f7-icons">data</i></div>
+                                <div class="item-inner">
+                                    <div class="item-title">Apps</div>
+                                </div>
+                            </a>
+                        </li>
+                        -->
+                        <li>
+                            <a href="/pattern.html" class="item-link item-content">
+                                <div class="item-media"><i class="icon f7-icons">star</i></div>
+                                <div class="item-inner">
+                                    <div class="item-title">Effekte</div>
+                                    <div class="item-after"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/color.html" class="item-link item-content">
+                                <div class="item-media"><i class="icon f7-icons">color_filter</i></div>
+                                <div class="item-inner">
+                                    <div class="item-title">Basisfarbe</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="block-title">Andere Einstellungen</div>
+                <div class="list">
+                    <ul>
+                        <li>
+                            <a href="/time.html" class="item-link item-content">
+                                <div class="item-media"><i class="icon f7-icons">time</i></div>
+                                <div class="item-inner">
+                                    <div class="item-title">Uhrzeit einstellen</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/brightness.html" class="item-link item-content">
+                                <div class="item-media"><i class="icon f7-icons">circle_half</i></div>
+                                <div class="item-inner">
+                                    <div class="item-title">Helligkeit</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/system.html" class="item-link item-content">
+                                <div class="item-media"><i class="icon f7-icons">settings</i></div>
+                                <div class="item-inner">
+                                    <div class="item-title">System</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="login-screen">
+    <div class="view">
+        <div class="page">
+            <!-- page-content has additional login-screen content -->
+            <div class="page-content login-screen-content">
+                <div class="login-screen-title">LED Clock</div>
+                <!-- Login form -->
+                <form id="login-form">
+                    <div class="list">
+                        <ul class="shaking-element">
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label">Passwort</div>
+                                    <div class="item-input-wrap">
+                                        <input type="password" name="password" placeholder="Passwort">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="loginError" class="display-none text-align-center color-red"></div>
+                    <div class="list">
+                        <ul>
+                            <li><a class="item-link list-button" id="login-button" href="#">Einloggen</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="block-footer">
+                        <p><a href="#" class="link" onclick="resetClock();">Passwort vergessen?</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/minified.js"></script>
+</body>
+</html>

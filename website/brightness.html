@@ -1,0 +1,30 @@
+<div data-name="brightness" class="page">
+    <div class="navbar">
+        <div class="navbar-inner sliding">
+            <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Zur&uuml;ck</span></a></div>
+            <div class="title">Helligkeit</div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <form class="list simple-list">
+            <ul>
+                <li>
+                    <div class="item-cell width-auto flex-shrink-0">
+                        <i class="icon f7-icons ios-only">circle_filled</i>
+                        <i class="icon material-icons md-only">brightness_low</i>
+                    </div>
+                    <div class="item-cell flex-shrink-3">
+                        <div id="brightnessSlider" class="range-slider range-slider-init color-orange" data-label="true">
+                        <input type="range" min="0" max="100" step="1" id="brightness" onchange="wsCommand('settings set brightness ' + $$('#brightness').val());">
+                        </div>
+                    </div>
+                    <div class="item-cell width-auto flex-shrink-0">
+                        <i class="icon f7-icons ios-only">circle</i>
+                        <i class="icon material-icons md-only">brightness_high</i>
+                </div>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>

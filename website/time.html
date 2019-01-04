@@ -1,0 +1,20 @@
+<div data-name="time" class="page">
+    <div class="navbar">
+        <div class="navbar-inner sliding">
+            <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Zur&uuml;ck</span></a></div>
+            <div class="title">Uhrzeit einstellen</div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="block block-strong">
+            <div class="time-control">
+                <input type="number" class="time-input" id="hour" value="12" min="0" max="23">:<input type="number" class="time-input" id="minute" value="10" min="0" max="59"><br>
+            </div>
+            <input type="button" class="button button-big" value="Zeit einstellen" onclick="setTime($$('#hour').val(), $$('#minute').val());">
+        </div>
+        <div class="block-footer">
+            TODO: Wenn es eine Internetverbindung gibt, wird diese Zeit demnächst mit der Internetzeit überschrieben.
+        </div>
+    </div>
+</div>

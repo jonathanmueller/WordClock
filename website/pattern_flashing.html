@@ -1,0 +1,50 @@
+<div data-name="pattern_flashing" class="page">
+    <div class="navbar">
+        <div class="navbar-inner sliding">
+            <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Zur&uuml;ck</span></a></div>
+            <div class="title">Blinken</div>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="list">
+            <ul>
+                <li>
+                    <a href="#" onclick="setFlashingPattern();" class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Eigenes Muster</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="wsCommand('display pattern flashing 500 500 1 500');" class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Langsam</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="wsCommand('display pattern flashing 200 200 1 200');" class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Schnell</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="wsCommand('display pattern flashing 50 100 1 100');" class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Blitzlicht</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="wsCommand('display pattern flashing 50 100 5 1000');" class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Blitzlicht mit Pause</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+<div data-name="wlan" class="page">
+    <div class="navbar">
+        <div class="navbar-inner sliding">
+            <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Zur&uuml;ck</span></a></div>
+            <div class="title">WLAN Einstellungen</div>
+        </div>
+    </div>
+    
+    <div class="page-content">
+        <div class="block-title">WLAN</div>
+        <div class="list">
+            <ul>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">SSID</div>
+                        <div class="item-input-wrap">
+                            <input type="text" id="wifiSSID" placeholder="SSID">
+                        </div>
+                    </div>
+                </li>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Passwort</div>
+                        <div class="item-input-wrap">
+                            <input type="password" id="wifiPassword" placeholder="Passwort">
+                        </div>
+                    </div>
+                </li>
+                <li><a class="item-link list-button" href="#" onclick="connectToSSID();">Mit WLAN verbinden</a></li>
+            </ul>
+        </div>
+
+        <div class="block-title">SoftAP</div>
+        <div class="list">
+            <ul>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">SSID</div>
+                        <div class="item-input-wrap">
+                            <input type="text" id="softAPSSID" placeholder="Password">
+                        </div>
+                    </div>
+                </li>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">Passwort</div>
+                        <div class="item-input-wrap">
+                            <input type="password" id="softAPPassword" placeholder="Password">
+                        </div>
+                    </div>
+                </li>
+                <li><a class="item-link list-button" href="#" onclick="createSoftAP();">Speichern</a></li>
+            </ul>
+        </div>
+
+
+        <div class="block-footer">TODO: Der Rest funktioniert (noch) nicht</div>
+        <div class="list">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">WLAN</div>
+                            <div class="item-after">
+                                <label class="label-switch">
+                                    <input type="checkbox" checked>
+                                    <div class="checkbox"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media"><i class="icon f7-icons size-18">check</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">LiSte24</div>
+                            <div class="item-after">
+                                <i class="icon f7-icons size-18 color-black">lock_fill</i>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="list">
+            <div class="block-title">Netzwerk wählen...</div>
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media invisible"><i class="icon f7-icons size-18">check</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">UnsecuredNetwork</div>
+                            <div class="item-after">
+                                <i class="invisible icon f7-icons size-18 color-black">lock_fill</i>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media invisible"><i class="icon f7-icons size-18">check</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Very Secure Network</div>
+                            <div class="item-after">
+                                <i class="icon f7-icons size-18 color-black">lock_fill</i>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media invisible"><i class="icon f7-icons size-18">check</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Anderes ...</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="list">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Eigenes Netzwerk erstellen</div>
+                            <div class="item-after">
+                                <label class="label-switch">
+                                    <input type="checkbox" checked>
+                                    <div class="checkbox"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="block-footer">Wenn alle Optionen deaktiviert werden, kann keine mehr mit der Uhr hergestellt werden. Zum Aktivieren des eingebauten WLAN-Netzwerks den softAP Knopf drücken.</div>
+        </div>
+    </div>
+</div>

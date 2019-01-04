@@ -1,0 +1,47 @@
+<div data-name="firmwareupdate" class="page">
+    <div class="navbar">
+        <div class="navbar-inner sliding">
+            <div class="left"><a href="#" class="back link"> <i class="icon icon-back"></i><span>Zur&uuml;ck</span></a></div>
+            <div class="title">Firmwareupdate</div>
+        </div>
+    </div>
+    
+    <div class="page-content">
+        <div class="block-title">Neue Firmware hochladen</div>
+        <form class="list form-ajax-submit" action="/update" enctype="multipart/form-data" name="firmwareForm" method="post">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="file" name="image">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <input type="submit" style="display:none;">
+                    <a href="javascript:document.forms.firmwareForm.querySelector('input[type=submit]').click();" class="item-link list-button">Update starten</a>
+                </li>
+            </ul>
+        </form>
+        <div class="block-title">Neues Web-Interface hochladen</div>
+        <form class="list form-ajax-submit" action="/updateSPIFFS" enctype="multipart/form-data" name="spiffsForm" method="post">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-input">
+                                <input type="file" name="image">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <input type="submit" style="display:none;">
+                    <a href="javascript:document.forms.spiffsForm.querySelector('input[type=submit]').click();" class="item-link list-button">Update starten</a>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
