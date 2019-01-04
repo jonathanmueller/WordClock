@@ -378,12 +378,12 @@ void doAction(AsyncWebSocketClient *client, std::vector<String>& args) {
 			return;
 		} else if (args[0] == F("clearconfig")) {
 			RESPOND(client, successStatus);
-			FastLED.delay(100);
+			delay(100);
 			eraseConfigAndRestart();
 			return;
 		} else if (args[0] == F("factoryreset")) {
 			RESPOND(client, successStatus);
-			FastLED.delay(100);
+			delay(100);
 			factoryReset();
 			return;
 		} else {

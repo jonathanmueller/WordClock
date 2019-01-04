@@ -55,8 +55,9 @@ void switchNetworkMode() {
 	WiFi.mode(isSoftAPMode ? WIFI_AP : WIFI_STA);
 	if (!isSoftAPMode) {
 		WiFi.begin();
+		WiFi.setAutoReconnect(true);
 	} else {
-		if (configuration.softAPName == 0) {
+		if (configuration.softAPName[0] == 0) {
 			WiFi.softAP(DEFAULT_SOFTAP_NAME, configuration.softAPPassword);
 		} else {
 			WiFi.softAP(configuration.softAPName, configuration.softAPPassword);

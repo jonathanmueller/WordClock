@@ -4,6 +4,7 @@
 #include "Math.h"
 #include "TimeKeeper.h"
 #include "TemperatureKeeper.h"
+#include "Configuration.h"
 
 // The current app
 void (*currentApp)() = app_time;
@@ -92,8 +93,6 @@ void app_loading() {
  * Show current time
  */
 
-uint16_t fadeTime = 2000;
-
 void app_time() {
 	if (!hasTime) {
 		app_loading();
@@ -107,7 +106,7 @@ void app_time() {
 	uint8_t second = currentTime.Second();
 
     uint16_t millisecondsIntoMinute = (uint16_t)second * 1000 + currentTimeMilliseconds;
-    float fadePercent = (millisecondsIntoMinute < fadeTime) ? ((float)millisecondsIntoMinute / fadeTime) : 1;
+    float fadePercent = (millisecondsIntoMinute < configuration.fadeDuration) ? ((float)millisecondsIntoMinute / configuration.fadeDuration) : 1;
         
     if (fadePercent < 1) {
         uint8_t previousHour = minute > 0 ? hour : (hour > 0 ? hour - 1 : 23);
@@ -118,10 +117,10 @@ void app_time() {
     }
     
 	/* Show corner LEDs */
-    uint8_t nscale = dim8_video(255 * fadePercent);
 	uint8_t corners = minute % 5;
-	if (corners < 1) { nscale8_video(leds + NUM_MATRIX_LEDS, 4, 255 - nscale); } /* Turn off all */
+	if (corners < 1) { nscale8_video(leds + NUM_MATRIX_LEDS, 4, dim8_video(255 * (1 - fadePercent))); } /* Turn off all */
     else {
+    	uint8_t nscale = dim8_video(255 * fadePercent);
         if (corners < 2) { leds[NUM_MATRIX_LEDS + 3].nscale8_video((corners == 1) ? nscale : 0); }
         if (corners < 3) { leds[NUM_MATRIX_LEDS + 2].nscale8_video((corners == 2) ? nscale : 0); }
         if (corners < 4) { leds[NUM_MATRIX_LEDS + 0].nscale8_video((corners == 3) ? nscale : 0); }

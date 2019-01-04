@@ -15,6 +15,7 @@ inline String getDefaultSoftAPName() {
 
 #define CONFIG_TABLE(HANDLE_ENTRY) \
 	HANDLE_ENTRY(uint8_t, 	brightness, 				20			)	/* Brightness in percent (0 - 100) 		*/	\
+	HANDLE_ENTRY(uint16_t, 	fadeDuration,				1000		) 	/* Time fade duration					*/	\
 	HANDLE_ENTRY(uint16_t, 	synchronizationInterval,	30			) 	/* Synchronization interval in minutes	*/
 
 #define CONFIG_STRINGS(HANDLE_ENTRY) \
