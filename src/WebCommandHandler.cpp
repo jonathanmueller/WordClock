@@ -50,8 +50,7 @@ void wifi(AsyncWebSocketClient *client, std::vector<String>& args) {
 	} else {
 		args[0].toLowerCase();
 		if (args[0] == F("status")) {
-			DynamicJsonBuffer jsonBuffer;
-			JsonObject& root = jsonBuffer.createObject();
+			DynamicJsonDocument root(1024);
 			root["success"] = true;
 			root["mode"] = (WiFi.getMode() & WIFI_AP) ? "softAP" : "station";
 			root["ssid"] = WiFi.SSID();
@@ -62,7 +61,7 @@ void wifi(AsyncWebSocketClient *client, std::vector<String>& args) {
 			root["softAPName"] = (char*) config.ssid;
 
 			String response;
-			root.printTo(response);
+			serializeJson(root, response);
 			RESPOND(client, response);
 		} else if (args[0] == F("connect")) {
 			RESPOND(client, successStatus);
@@ -147,11 +146,9 @@ void settings(AsyncWebSocketClient *client, std::vector<String> &args) {
 	} else {
 		args[0].toLowerCase();
 		if (args[0] == "get") {
-			DynamicJsonBuffer jsonBuffer;
-			JsonObject& root = jsonBuffer.createObject();
+			DynamicJsonDocument root(1024);
 			root["success"] = true;
-
-			JsonObject& settings = root.createNestedObject("settings");
+			JsonObject settings = root.createNestedObject("settings");
 			if (args.size() == 1) {
 				// Get all parameters
 				for (auto it = configOptions.begin(); it != configOptions.end(); it++) {
@@ -163,7 +160,7 @@ void settings(AsyncWebSocketClient *client, std::vector<String> &args) {
 			}
 
 			String response;
-			root.printTo(response);
+			serializeJson(root, response);
 			RESPOND(client, response);
 		} else if (args[0] == "set") {
 			writeToConfig(args[1], joinArgs(args, 2));
@@ -311,21 +308,19 @@ void time(AsyncWebSocketClient *client, std::vector<String>& args) {
 			RESPOND(client, successStatus);
 			return;
 		} else if (args[0] == F("get")) {
-			DynamicJsonBuffer jsonBuffer;
-			JsonObject& root = jsonBuffer.createObject();
+			DynamicJsonDocument root(1024);
 			root["success"] = true;
 			root["time"] = timeToISOString(currentTime);
 			root["lastsynced"] = timeToISOString(lastSyncedTime);
 
 			String response;
-			root.printTo(response);
+			serializeJson(root, response);
 			RESPOND(client, response);
 		} else if (args[0] == F("set")) {
 			if (args.size() == 2 && args[1].length() == 24) {
 				RtcDateTime dt = timeFromISOString(args[1]);
 				
-				DynamicJsonBuffer jsonBuffer;
-				JsonObject& root = jsonBuffer.createObject();
+				DynamicJsonDocument root(1024);
 
 				if (!dt.Year()) {
 					root["success"] = false;
@@ -336,7 +331,7 @@ void time(AsyncWebSocketClient *client, std::vector<String>& args) {
 				}
 
 				String response;
-				root.printTo(response);
+				serializeJson(root, response);
 				RESPOND(client, response);
 			} else {
 				RESPOND(client, F("Usage: {datetime-ISO-8601} (e.g. 2018-05-11T15:43:31.000Z)"));

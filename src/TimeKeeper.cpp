@@ -125,9 +125,9 @@ void disconnectedFromTimeServer(void* _, AsyncClient *tcpClient) {
 	HTTPResponse response = parseHTTPResponse(responseString);
 	responseBuffer.clear();
 
-	DynamicJsonBuffer jsonBuffer;
-	JsonObject& root = jsonBuffer.parseObject(response.body);
-	if (!root.success()) {
+	DynamicJsonDocument root(1024);
+	DeserializationError error = deserializeJson(root, response.body);
+	if (error) {
 		return;
 	}
 
