@@ -1,24 +1,39 @@
 #include "UpdateHandler.h"
-#include "WebServer.h"
-#include "LEDs.h"
+
 #include "Apps.h"
+#include "LEDs.h"
+#include "LittleFS.h"
+#include "WebServer.h"
+
+#ifdef ESPHOME
+#include "esphome.h"
+#endif
 
 boolean shouldReboot = false;
 
 float updateStatus = 0.0;
 
+boolean isEspHomeUpdate = false;
+boolean updateError = false;
+boolean updateFinished = false;
+
 void displayUpdateStatus() {
-	if (!Update.hasError()) {
-        if (Update.isFinished()) {
+    if (!isEspHomeUpdate) {
+        updateError = Update.hasError();
+        updateFinished = Update.isFinished();
+    }
+
+    if (!updateError) {
+        if (updateFinished) {
             fill_solid(leds, NUM_LEDS, CRGB::Green);
-			showGlyph(Glyph::Checkmark);
+            showGlyph(Glyph::Checkmark);
         } else {
             fill_solid(leds, NUM_LEDS, CRGB::Yellow);
             float fract;
-            float RADIUS = sqrt((float)NUM_COLS*NUM_COLS/4 + (float)NUM_ROWS*NUM_ROWS/4);
+            float RADIUS = sqrt((float)NUM_COLS * NUM_COLS / 4 + (float)NUM_ROWS * NUM_ROWS / 4);
             for (uint8_t led = 0; led < NUM_LEDS; led++) {
-                float dx = getPosX(led) - (NUM_COLS - 1)/2.0;
-                float dy = getPosY(led) - (NUM_ROWS - 1)/2.0;
+                float dx = getPosX(led) - (NUM_COLS - 1) / 2.0;
+                float dy = getPosY(led) - (NUM_ROWS - 1) / 2.0;
                 float distanceFromCenter = sqrt(pow(dx, 2) + pow(dy, 2));
 
                 fract = RADIUS * updateStatus - distanceFromCenter;
@@ -27,12 +42,11 @@ void displayUpdateStatus() {
                 fade_video(leds + led, 1, dim8_video(sin8(distanceFromCenter * 50 - (gHue + gHueFraction) * 30) * 0.8));
             }
         }
-	} else {
-		fill_solid(leds, NUM_LEDS, CRGB::Red);
-		showGlyph(Glyph::Cross);
-	}
+    } else {
+        fill_solid(leds, NUM_LEDS, CRGB::Red);
+        showGlyph(Glyph::Cross);
+    }
 }
-
 
 #define PROGRESS_BAR_WIDTH 60
 #define PROGRESS_BAR_FPS 10
@@ -40,82 +54,95 @@ void displayUpdateStatus() {
 unsigned int lastPrintedProgressBar = 0;
 
 void printUpdateProgressBar() {
-	if (lastPrintedProgressBar > millis() - (1000/(PROGRESS_BAR_FPS))) {
-		return;
-	}
-	lastPrintedProgressBar = millis();
+    if (lastPrintedProgressBar > millis() - (1000 / (PROGRESS_BAR_FPS))) {
+        return;
+    }
+    lastPrintedProgressBar = millis();
 
-	int progressWidth = updateStatus * PROGRESS_BAR_WIDTH;
+    int progressWidth = updateStatus * PROGRESS_BAR_WIDTH;
 
-	Serial.print("\r[");
-	for (uint8_t x = 0; x < PROGRESS_BAR_WIDTH; x++) {
-		Serial.print(x < progressWidth ? '=' : (x == progressWidth ? '>' : ' '));
-	}
-	Serial.printf("] %.1f%%", updateStatus * 100);
+    Serial.print("\r[");
+    for (uint8_t x = 0; x < PROGRESS_BAR_WIDTH; x++) {
+        Serial.print(x < progressWidth ? '=' : (x == progressWidth ? '>' : ' '));
+    }
+    Serial.printf("] %.1f%%", updateStatus * 100);
 }
 
 void uploadHandler(AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final) {
-	updateStatus = (float)(index+len) / request->contentLength();
-	if (!index) {
-		// Get desired sector
-		int command = U_FLASH;
-		if (request->url() == "/updateSPIFFS") {
-			command = U_SPIFFS;
-		}
+    isEspHomeUpdate = false;
 
-		currentApp = displayUpdateStatus;
+    updateStatus = (float)(index + len) / request->contentLength();
+    if (!index) {
+        // Get desired sector
+        int command = U_FLASH;
+        if (request->url() == "/updateSPIFFS") {
+            command = U_FS;
+        }
 
-		SPIFFS.end();
+        currentApp = displayUpdateStatus;
 
-		Serial.printf("Update Start: %s\n", filename.c_str());
+        LittleFS.end();
 
-		Update.runAsync(true);
-		if (!Update.begin(request->contentLength(), command)) {
-			Update.printError(Serial);
-		}
-	}
-	if (!Update.hasError()) {
-		if (Update.write(data, len) != len) {
-			Update.printError(Serial);
-		}
-	}
-	
-	printUpdateProgressBar();
+        Serial.printf("Update Start: %s\n", filename.c_str());
 
-	if (final) {
-		Serial.println();
-		if (Update.end(true)) {
-			Serial.printf("Update Success: %uB\n", index + len);
-		} else {
-			Update.printError(Serial);
-		}
-	}
-	
-	updateLEDs();
+        Update.runAsync(true);
+        if (!Update.begin(request->contentLength(), command)) {
+            Update.printError(Serial);
+        }
+    }
+    if (!Update.hasError()) {
+        if (Update.write(data, len) != len) {
+            Update.printError(Serial);
+        }
+    }
+
+    printUpdateProgressBar();
+
+    if (final) {
+        Serial.println();
+        if (Update.end(true)) {
+            Serial.printf("Update Success: %uB\n", index + len);
+        } else {
+            Update.printError(Serial);
+        }
+    }
+
+    updateLEDs();
 }
 
-void requestHandler(AsyncWebServerRequest * request) {
-	shouldReboot = !Update.hasError();
+void requestHandler(AsyncWebServerRequest *request) {
+    shouldReboot = !Update.hasError();
 
-	AsyncWebServerResponse *response = request->beginResponse(200, F("application/json"), shouldReboot ? F("{\"success\":true}") : F("{\"success\":false}"));
-	response->addHeader("Connection", "close");
-	request->send(response);
+    AsyncWebServerResponse *response = request->beginResponse(200, F("application/json"), shouldReboot ? F("{\"success\":true}") : F("{\"success\":false}"));
+    response->addHeader("Connection", "close");
+    request->send(response);
 }
 
 void rebootIfNecessary() {
-	if (shouldReboot) {
-		Serial.println("Rebooting...");
-		FastLED.show();
-		delay(100);
-		ESP.restart();
-	}
+    if (shouldReboot) {
+        Serial.println("Rebooting...");
+        FastLED.show();
+        delay(100);
+        ESP.restart();
+    }
 }
 
 void setupUpdateHandler() {
-	// Simple Firmware Update Form
-	server.on("/update", HTTP_GET, [](AsyncWebServerRequest * request) {
-		request->send(200, "text/html", F("<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='image'><input type='submit' value='Update'></form><br><form method='POST' action='/updateSPIFFS' enctype='multipart/form-data'><input type='file' name='image'><input type='submit' value='Update SPIFFS'></form>"));
-	});
-	server.on("/update", HTTP_POST, requestHandler, uploadHandler);
-	server.on("/updateSPIFFS", HTTP_POST, requestHandler, uploadHandler);
+    // Simple Firmware Update Form
+    server.on("/update", HTTP_GET, [](AsyncWebServerRequest *request) {
+        request->send(200, "text/html", F("<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='image'><input type='submit' value='Update'></form><br><form method='POST' action='/updateSPIFFS' enctype='multipart/form-data'><input type='file' name='image'><input type='submit' value='Update SPIFFS'></form>"));
+    });
+    server.on("/update", HTTP_POST, requestHandler, uploadHandler);
+    server.on("/updateSPIFFS", HTTP_POST, requestHandler, uploadHandler);
+
+#ifdef ESPHOME
+    using namespace esphome;
+    ota::global_ota_component->add_on_state_callback([](ota::OTAState state, float progress, uint8_t error) {
+        isEspHomeUpdate = true;
+        currentApp = displayUpdateStatus;
+        updateStatus = progress / 100.0f;
+        updateError = state == ota::OTA_ERROR;
+        updateFinished = state == ota::OTA_COMPLETED;
+    });
+#endif
 }

@@ -1,13 +1,15 @@
 #include "Patterns.h"
 #include "LEDs.h"
+#include "Apps.h"
 
 // The current pattern
 void (*currentPattern)() = pattern_solidColor;
+CEveryNSeconds patternCycleTimer(10);
 
 /**
  * Cycle patterns
  */
-std::vector<void (*)()> cyclingPatterns = {pattern_waves, pattern_noise, pattern_rainbow, pattern_rainbowWithGlitter, pattern_solidColor};
+std::vector<void (*)()> cyclingPatterns = {pattern_waves, pattern_noise, pattern_rainbow, pattern_rainbowWithGlitter, pattern_solidColor, pattern_radar};
 // Index number of which pattern is current
 uint8_t currentCyclePatternIndex = 0;
 
@@ -20,11 +22,36 @@ void pattern_cycle() {
 
 	cyclingPatterns[currentCyclePatternIndex]();
 
-	EVERY_N_SECONDS(10) {
-		currentCyclePatternIndex = (currentCyclePatternIndex + 1) % cyclingPatterns.size();
+	/* If the app is cycle, it also switches the pattern everytime the solid app starts */
+	if (patternCycleTimer) {
+		if (currentApp != app_cycle) {
+			nextPattern();
+		}
 	}
 }
 
+
+void nextPattern() {
+	currentCyclePatternIndex = (currentCyclePatternIndex + 1) % cyclingPatterns.size();
+	patternCycleTimer.reset();
+}
+
+void pattern_radar() {
+	fill_solid(leds, NUM_LEDS, solidLEDColor);
+	float offset = millis() / 200.0f;
+	for( int led = 0; led < NUM_LEDS; ++led) {
+		if (led >= NUM_MATRIX_LEDS) {
+			leds[led].fadeToBlackBy(255);
+		}
+
+		float dx = getPosX(led) - (NUM_COLS - 1)/2.0;
+        float dy = getPosY(led) - (NUM_ROWS - 1)/2.0;
+		float angle = fmod(atan2f(dx, dy) + offset, TWO_PI);
+		leds[led].fadeToBlackBy(powf(min(1.0, angle / TWO_PI), 0.5) * 255);
+    }
+
+	//leds[5].r = fadeToBlackBy(255);
+}
 
 /**
  * Rainbow pattern

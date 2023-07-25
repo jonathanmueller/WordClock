@@ -1,4 +1,4 @@
 .pio
 .pioenvs
-.vscode/ipch
-.vscode/.BROWSE.*
+.vscode/
+website/.idea/

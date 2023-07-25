@@ -1,0 +1,60 @@
+{
+    "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+    "name": "WordClock",
+    "version": "0.0.1",
+    "description": "A clock showing the current time by illuminating words in a using addressable LEDs matrix based on the layout from the following thingiverse project: https://www.thingiverse.com/thing:2130830",
+    "keywords": "word clock",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/jonathanmueller/WordClock.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Jonathan Müller",
+        "maintainer": true
+      }
+    ],
+    "license": "MIT",
+    "dependencies": [
+      {
+        "owner": "fastled",
+        "name": "FastLED",
+        "version": "3.6.0"
+      },
+      {
+        "name": "ArduinoJson",
+        "version": "6.11.0"
+      },
+      {
+        "owner": "Makuna",
+        "name": "Rtc",
+        "version": "2.4.1"
+      },
+      {
+        "owner": "me-no-dev",
+        "name": "ESPAsyncTCP",
+        "version": "1.2.2"
+      },
+      {
+        "owner": "khoih-prog",
+        "name": "AsyncHTTPRequest_Generic",
+        "version": "1.13.0"
+      },
+      {
+        "name": "ESP Async WebServer",
+        "version": "https://github.com/khoih-prog/ESPAsyncWebServer",
+        "platforms": ["espressif8266", "espressif32"]
+      }
+    ],
+    "export": {
+        "exclude": ["data", "website"]
+    },
+    "build": {
+        "flags": ["-DESPHOME", "-DUSE_OTA_STATE_CALLBACK"],
+        "libLDFMode": "deep+"
+    },
+    "frameworks": "arduino",
+    "platforms": "espressif8266"
+  }

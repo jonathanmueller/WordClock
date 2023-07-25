@@ -6,6 +6,7 @@
 #define FASTLED_INTERNAL
 #undef FASTLED_ALLOW_INTERRUPTS
 #define FASTLED_ALLOW_INTERRUPTS 0
+#undef delay
 #include <FastLED.h>
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
@@ -40,7 +41,9 @@
 /**
  * Use this to set the LEDs
  */
-extern CRGB leds[NUM_LEDS];
+extern CRGB *leds;               // [NUM_LEDS];
+extern CRGB* const leds_main;    // [NUM_LEDS];
+extern CRGB* const leds_buffer;  // [NUM_LEDS];
 
 /**
  * User these to get the position of a specific LED_TYPE
